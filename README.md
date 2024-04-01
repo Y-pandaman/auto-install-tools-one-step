@@ -1,28 +1,30 @@
-set_apt_mirror "Set apt mirror"
-install_base_libs "Install base libs"
-install_python3 "Install python3"
-install_extra_tools "Install extra tools"
-install_zsh "Install zsh"
-install_clang_format "Install clang format tools"
-install_nvidia_driver "Install nvidia driver"
-install_nvidia_tensorrt "Install nvidia tensorrt"
-install_cmake "Install cmake"
-install_catch2 "Install catch2"
-install_absl "Install absl"
-install_opencv_desktop_gpu "Install opencv with gpu"
-install_fmt "Install fmt"
-install_docker "Install docker"
-install_nvidia_docker "Install nvidia-docker"
-install_tmux "Install tmux"
-install_colcon "Install colcon"
-install_gstreamer "Install gstreamer"
-install_ecal "Install ecal"
-install_ros1 "Install ros1"
-install_ros2 "Install ros2"
-install_gcc "Install gcc"
-install_ceres "Install ceres"
-install_doxygen "Install doxygen"
-install_geographiclib "Install geographiclib"
-install_gtsam "Install gtsam"
-install_proj "Install proj"
-install_sophus "Install sophus"
+# auto install tools one step
+
+- set_apt_mirror
+- install_base_libs
+- install_python3
+- install_extra_tools
+- install_zsh
+- install_clang_format
+- install_nvidia_driver
+- install_nvidia_tensorrt
+- install_cmake
+- install_catch2
+- install_absl
+- install_opencv_desktop_gpu
+- install_fmt
+- install_docker
+- install_nvidia_docker
+- install_tmux
+- install_colcon
+- install_gstreamer
+- install_ecal
+- install_ros1
+- install_ros2
+- install_gcc
+- install_ceres
+- install_doxygen
+- install_geographiclib
+- install_gtsam
+- install_proj
+- install_sophus
