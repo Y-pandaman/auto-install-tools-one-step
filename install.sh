@@ -140,27 +140,26 @@ fi
 
 # set apt mirror
 set_apt_mirror() {
-    sudo apt-get update &&
-        sudo apt-get install -y --no-install-recommends ca-certificates &&
-        sudo apt-get clean &&
-        sudo rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-    sudo sed -i 's/ports.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sudo sed -i 's/archive.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sudo sed -i 's/archive.canonical.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sudo sed -i 's/security.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sudo sed -i 's/http:\/\/mirrors.sjtug.sjtu.edu.cn/https:\/\/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
+    apt-get update &&
+        apt-get install -y --no-install-recommends ca-certificates &&
+        apt-get clean &&
+        rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    sed -i 's/ports.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
+    sed -i 's/archive.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
+    sed -i 's/archive.canonical.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
+    sed -i 's/security.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
+    sed -i 's/http:\/\/mirrors.sjtug.sjtu.edu.cn/https:\/\/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
 }
 
 # Install requried libraries
 install_base_libs() {
-    sudo apt-get update && sudo apt-get install -y --no-install-recommends software-properties-common
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-    sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+    apt-get update && apt-get install -y --no-install-recommends software-properties-common
+    add-apt-repository ppa:ubuntu-toolchain-r/test
+    apt-get update && apt-get install -y --no-install-recommends \
         libcurl4-openssl-dev \
         wget \
         git \
         pkg-config \
-        sudo \
         ssh \
         libssl-dev \
         pbzip2 \
@@ -177,24 +176,24 @@ install_base_libs() {
 
 # install python3
 install_python3() {
-    sudo apt-get update &&
-        sudo apt-get install -y --no-install-recommends \
+    apt-get update &&
+        apt-get install -y --no-install-recommends \
             python3 \
             python3-pip \
             python3-dev \
             python3-wheel &&
         cd /usr/local/bin &&
-        sudo ln -sf /usr/bin/python3 python &&
-        sudo ln -sf /usr/bin/pip3 pip
-    sudo apt-get clean &&
-        sudo rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+        ln -sf /usr/bin/python3 python &&
+        ln -sf /usr/bin/pip3 pip
+    apt-get clean &&
+        rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
     python3 -m pip install -U pip
 }
 
 # install extra tools
 install_extra_tools() {
-    sudo apt-get update &&
-        sudo apt-get install -y --no-install-recommends \
+    apt-get update &&
+        apt-get install -y --no-install-recommends \
             gawk \
             tmux \
             zsh \
@@ -226,30 +225,30 @@ install_zsh() {
 
 # install clangd via apt
 install_clang_format() {
-    sudo apt-get update &&
-        sudo apt-get install -y --no-install-recommends clang-format isort flake8 &&
-        sudo apt-get install -y --no-install-recommends black || true &&
-        sudo apt-get install -y --no-install-recommends yapf || sudo apt-get install -y --no-install-recommends yapf3 &&
-        sudo apt-get install -y --no-install-recommends clangd || sudo apt-get install -y --no-install-recommends clangd-10 &&
-        sudo apt-get clean
+    apt-get update &&
+        apt-get install -y --no-install-recommends clang-format isort flake8 &&
+        apt-get install -y --no-install-recommends black || true &&
+        apt-get install -y --no-install-recommends yapf || apt-get install -y --no-install-recommends yapf3 &&
+        apt-get install -y --no-install-recommends clangd || apt-get install -y --no-install-recommends clangd-10 &&
+        apt-get clean
 }
 
 # install nvidia drivers
 install_nvidia_driver() {
-    sudo apt-get install linux-headers-$(uname -r)
-    sudo apt-key del 7fa2af80
+    apt-get install linux-headers-$(uname -r)
+    apt-key del 7fa2af80
     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
-    sudo dpkg -i cuda-keyring_1.0-1_all.deb
-    sudo apt-get update
-    sudo apt-get -y install nvidia-driver-535 cuda-toolkit-11-8
+    dpkg -i cuda-keyring_1.0-1_all.deb
+    apt-get update
+    apt-get -y install nvidia-driver-535 cuda-toolkit-11-8
 }
 
 # install nvidia tensorrt
 install_nvidia_tensorrt() {
     v="${TRT_VERSION%.*}-1+cuda${CUDA_VERSION%.*}" &&
-        sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${OS_PATH_NAME}/$(uname -m)/3bf863cc.pub &&
-        sudo apt-get update &&
-        sudo apt-get install -y --no-install-recommends \
+        apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${OS_PATH_NAME}/$(uname -m)/3bf863cc.pub &&
+        apt-get update &&
+        apt-get install -y --no-install-recommends \
             libnvinfer8=${v} \
             libnvonnxparsers8=${v} \
             libnvparsers8=${v} \
@@ -264,7 +263,7 @@ install_nvidia_tensorrt() {
 # install cmake
 install_cmake() {
     # install dependencies for SSL support
-    sudo apt-get install zlib1g-dev libssl-dev
+    apt-get install zlib1g-dev libssl-dev
     cd /tmp &&
         wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz
     tar -xzvf cmake-${CMAKE_VERSION}.tar.gz
@@ -292,7 +291,7 @@ install_catch2() {
         mkdir build &&
         cd build &&
         cmake .. &&
-        sudo make install -j${NUM_THREADS}
+        make install -j${NUM_THREADS}
 }
 
 # install absl
@@ -307,7 +306,7 @@ install_absl() {
     mkdir build && cd build &&
         cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. &&
         make -j${MAKE_JOBS} &&
-        sudo make install &&
+        make install &&
         cd /tmp &&
         rm -rf abseil-cpp
 }
@@ -317,20 +316,20 @@ install_opencv_desktop_gpu() {
     prompt_default OPENCV_VERSION "OpenCV Version [${OPENCV_VERSION}]"
 
     status "Install dependencies of OpenCV"
-    sudo apt update
+    apt update
 
     # install developer tools
-    sudo apt -yq install build-essential checkinstall cmake pkg-config
-    sudo apt -yq install git gfortran
+    apt -yq install build-essential checkinstall cmake pkg-config
+    apt -yq install git gfortran
 
     # install image I/O packages for loading various image file formats from disk
-    sudo apt -yq install libjpeg8-dev libjpeg-dev libpng-dev
-    sudo apt install libjasper1 libjasper-dev
+    apt -yq install libjpeg8-dev libjpeg-dev libpng-dev
+    apt install libjasper1 libjasper-dev
 
     #  GTK development library to build Graphical User Interfaces
-    sudo apt -y install libgtk-3-dev libtbb-dev qt5-default
+    apt -y install libgtk-3-dev libtbb-dev qt5-default
 
-    sudo apt-get install -yq \
+    apt-get install -yq \
         libglew-dev \
         libtiff5-dev \
         zlib1g-dev \
@@ -340,13 +339,13 @@ install_opencv_desktop_gpu() {
         unzip \
         libgoogle-glog-dev \
         libgflags-dev
-    sudo apt-get install -yq \
+    apt-get install -yq \
         ffmpeg \
         libavcodec-dev \
         libavformat-dev \
         libavutil-dev \
         libswscale-dev
-    sudo apt-get install -yq \
+    apt-get install -yq \
         libgstreamer1.0-0 \
         gstreamer1.0-plugins-base \
         gstreamer1.0-plugins-good \
@@ -364,14 +363,14 @@ install_opencv_desktop_gpu() {
         libgstreamer-plugins-base1.0-dev \
         libgstreamer-plugins-good1.0-dev \
         libgstreamer-plugins-bad1.0-dev
-    sudo apt -y install libv4l-dev libdc1394-22-dev
-    sudo apt -y install libatlas-base-dev
-    sudo apt -y install libfaac-dev libmp3lame-dev libtheora-dev
-    sudo apt -y install libxvidcore-dev libx264-dev
-    sudo apt -y install libopencore-amrnb-dev libopencore-amrwb-dev
-    sudo apt -y install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen x264 v4l-utils
-    sudo apt-get install -yq python-dev python-numpy python-py python-pytest
-    sudo apt-get install -yq python3-dev python3-numpy python3-py python3-pytest
+    apt -y install libv4l-dev libdc1394-22-dev
+    apt -y install libatlas-base-dev
+    apt -y install libfaac-dev libmp3lame-dev libtheora-dev
+    apt -y install libxvidcore-dev libx264-dev
+    apt -y install libopencore-amrnb-dev libopencore-amrwb-dev
+    apt -y install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen x264 v4l-utils
+    apt-get install -yq python-dev python-numpy python-py python-pytest
+    apt-get install -yq python3-dev python3-numpy python3-py python3-pytest
 
     status "Downloading source code of OpenCV"
     pushd ${TMP_DIR}
@@ -431,7 +430,7 @@ install_opencv_desktop_gpu() {
         -DOPENCV_GENERATE_PKGCONFIG=YES \
         .. &&
         make -j &&
-        sudo make install
+        make install
 }
 
 # install fmt
@@ -454,12 +453,12 @@ install_fmt() {
 install_docker() {
     # install docker
     curl https://get.docker.com | sh &&
-        sudo systemctl start docker &&
-        sudo systemctl enable docker
+        systemctl start docker &&
+        systemctl enable docker
 
     # non-root user
-    sudo groupadd docker
-    sudo usermod -aG docker $USER
+    groupadd docker
+    usermod -aG docker $USER
     warning "Please log out and log in to take effects"
     # docker run hello-world
 }
@@ -471,12 +470,12 @@ install_nvidia_docker() {
         . /etc/os-release
         echo $ID$VERSION_ID
     ) &&
-        curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - &&
-        curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+        curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | apt-key add - &&
+        curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list
 
     # Install the package
-    sudo apt-get update && sudo apt-get install -y nvidia-docker2
-    sudo systemctl restart docker
+    apt-get update && apt-get install -y nvidia-docker2
+    systemctl restart docker
 
     # Test nvidia-smi with the latest official CUDA image
     docker run --gpus all nvidia/cuda:11.0-base nvidia-smi
@@ -484,9 +483,9 @@ install_nvidia_docker() {
 
 update_with_nvidia_docker2() {
     # On debian based distributions: Ubuntu / Debian
-    sudo apt-get update
-    sudo apt-get --only-upgrade install docker-ce nvidia-docker2
-    sudo systemctl restart docker
+    apt-get update
+    apt-get --only-upgrade install docker-ce nvidia-docker2
+    systemctl restart docker
 
     # Test nvidia-smi with the latest official CUDA image
     docker run --gpus all nvidia/cuda:9.0-base nvidia-smi
@@ -498,11 +497,11 @@ install_tmux() {
     prompt_default LIBEVENT_VERSION "Libevent Build [${LIBEVENT_VERSION}]"
 
     # uninstall installed tmux
-    sudo apt-get remove -y tmux
-    sudo apt-get remove -y 'libevent-*'
+    apt-get remove -y tmux
+    apt-get remove -y 'libevent-*'
 
     # install libncurses
-    sudo apt-get install -y libncurses5-dev
+    apt-get install -y libncurses5-dev
 
     # download source
     pushd ${TMP_DIR}
@@ -519,26 +518,26 @@ install_tmux() {
     # install libevent
     cd "libevent-${LIBEVENT_VERSION}-stable"
     ./configure && make
-    sudo make install
+    make install
     cd ..
 
     # build tmux and install
     cd "tmux-${TMUX_VERSION}"
     ./configure && make
-    sudo make install
+    make install
 
     popd
 }
 
 # install colcon
 install_colcon() {
-    curl -s https://packagecloud.io/install/repositories/dirk-thomas/colcon/script.deb.sh | sudo bash
-    sudo apt install python3-colcon-common-extensions ccache
+    curl -s https://packagecloud.io/install/repositories/dirk-thomas/colcon/script.deb.sh | bash
+    apt install python3-colcon-common-extensions ccache
 }
 
 #install gstreamer
 install_gstreamer() {
-    sudo apt-get install \
+    apt-get install \
         libgstreamer1.0-dev \
         libgstreamer-plugins-base1.0-dev \
         libgstreamer-plugins-bad1.0-dev \
@@ -557,16 +556,16 @@ install_gstreamer() {
 
 # install ecal
 install_ecal() {
-    sudo apt install libprotobuf-dev protobuf-compiler
-    sudo add-apt-repository ppa:ecal/ecal-latest
-    sudo apt-get update
-    sudo apt-get install ecal
+    apt install libprotobuf-dev protobuf-compiler
+    add-apt-repository ppa:ecal/ecal-latest
+    apt-get update
+    apt-get install ecal
 }
 
 # install ros1
 install_ros1() {
-    sudo apt-get update &&
-        sudo apt-get install -q -y --no-install-recommends dirmngr gnupg2 lsb-core curl
+    apt-get update &&
+        apt-get install -q -y --no-install-recommends dirmngr gnupg2 lsb-core curl
 
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
     if [ "x${USE_MIRROR}" = "xtrue" ]; then
@@ -577,24 +576,24 @@ install_ros1() {
     fi
 
     if [ "x${ROS1_PYTHON}" = "xpython2" ]; then
-        sudo apt-get update &&
-            sudo apt-get install --no-install-recommends -y \
+        apt-get update &&
+            apt-get install --no-install-recommends -y \
                 python-rosdep \
                 python-rosinstall \
                 python-vcstools
     else
-        sudo apt-get update &&
-            sudo apt-get install --no-install-recommends -y \
+        apt-get update &&
+            apt-get install --no-install-recommends -y \
                 python3-rosdep \
                 python3-rosinstall \
                 python3-vcstools
     fi
 
-    sudo rosdep init &&
+    rosdep init &&
         rosdep update --rosdistro "${ROS1_DISTRO}"
 
-    sudo apt-get update &&
-        sudo apt-get install -q -y ros-"${ROS1_DISTRO}"-${ROS1_METAPACKAGE} \
+    apt-get update &&
+        apt-get install -q -y ros-"${ROS1_DISTRO}"-${ROS1_METAPACKAGE} \
             ros-"${ROS1_DISTRO}"-camera-calibration-parsers \
             ros-"${ROS1_DISTRO}"-camera-info-manager \
             ros-"${ROS1_DISTRO}"-cv-bridge \
@@ -753,9 +752,9 @@ install_gcc() {
 
 # install ceres
 install_ceres() {
-    sudo apt-get update
-    sudo apt-get install -q -y libgoogle-glog-dev libgflags-dev libatlas-base-dev libeigen3-dev
-    sudo apt-get clean
+    apt-get update
+    apt-get install -q -y libgoogle-glog-dev libgflags-dev libatlas-base-dev libeigen3-dev
+    apt-get clean
 
     # get latest source
     cd /tmp
@@ -767,18 +766,18 @@ install_ceres() {
     mkdir build && cd build
     cmake ..
     make -j${NUM_THREADS}
-    sudo make install
+    make install
 
     # clean
     cd /tmp
-    sudo rm -rf ceres-solver
+    rm -rf ceres-solver
 }
 
 # install doxygen
 install_doxygen() {
-    sudo apt-get update
-    sudo apt-get install -y graphviz bison flex cmake build-essential
-    sudo apt-get clean
+    apt-get update
+    apt-get install -y graphviz bison flex cmake build-essential
+    apt-get clean
 
     # Get latest source code
     cd /tmp
@@ -790,11 +789,11 @@ install_doxygen() {
     cd build
     cmake -G "Unix Makefiles" ..
     make -j${NUM_THREADS}
-    sudo make install
+    make install
 
     # Clean up
     cd /tmp
-    sudo rm -rf doxygen
+    rm -rf doxygen
 }
 
 # install geographiclib
@@ -809,9 +808,9 @@ install_geographiclib() {
     mkdir build && cd build &&
         cmake .. &&
         make -j${NUM_THREADS} &&
-        sudo make install &&
+        make install &&
         cd /tmp &&
-        sudo rm -rf geographiclib
+        rm -rf geographiclib
 }
 
 # install gtsam
@@ -826,19 +825,19 @@ install_gtsam() {
     mkdir build && cd build
     cmake -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF ..
     make -j${NUM_THREADS}
-    sudo make install
+    make install
 
     # clean
     cd /tmp
-    sudo rm -rf gtsam
+    rm -rf gtsam
 }
 
 # install proj
 install_proj() {
-    sudo apt-get update
-    sudo apt-get install -q -y --no-install-recommends sqlite3 libsqlite3-dev curl libcurl4-openssl-dev
-    sudo apt-get clean
-    sudo rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    apt-get update
+    apt-get install -q -y --no-install-recommends sqlite3 libsqlite3-dev curl libcurl4-openssl-dev
+    apt-get clean
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
     # Get latest source code
     cd /tmp
@@ -852,7 +851,7 @@ install_proj() {
     cmake --build build --target install
 
     # Clean up
-    cd /tmp && sudo rm -rf proj-${PROJ_VERSION} proj-${PROJ_VERSION}.tar.gz
+    cd /tmp && rm -rf proj-${PROJ_VERSION} proj-${PROJ_VERSION}.tar.gz
 }
 
 # install sophus
@@ -867,11 +866,11 @@ install_sophus() {
     mkdir build && cd build
     cmake .. -DBUILD_SOPHUS_TESTS=OFF
     make -j${NUM_THREADS}
-    sudo make install
+    make install
 
     # clean
     cd /tmp
-    sudo rm -rf Sophus
+    rm -rf Sophus
 }
 
 # install c-periphery
@@ -884,22 +883,22 @@ install_c_periphery() {
     cd build
     cmake -DBUILD_SHARED_LIBS=ON ..
     make -j${NUM_THREADS}
-    sudo make install
+    make install
 
     # clean
     cd /tmp
-    sudo rm -rf c-periphery
+    rm -rf c-periphery
 }
 
 # install libsocketcan
 install_socketcan() {
-    sudo apt install can-utils libsocketcan-dev libasio-dev
+    apt install can-utils libsocketcan-dev libasio-dev
 }
 
 # install bluetooth
 install_bluetooth() {
-    sudo apt-get install libbluetooth-dev
-    sudo apt-get install libdbus-1-dev
+    apt-get install libbluetooth-dev
+    apt-get install libdbus-1-dev
 }
 
 confirm set_apt_mirror "Set apt mirror"

@@ -5,7 +5,7 @@
     git clone https://github.com/Y-pandaman/auto-install-tools-one-step.git
     cd auto-install-tools-one-step
     chmod +x install.sh
-    ./install.sh
+    sudo ./install.sh
 ```
 
 ## supported lib
