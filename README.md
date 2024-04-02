@@ -12,6 +12,7 @@
 - [x] apt_mirror
 - [x] base_libs
 - [x] python3
+- [x] yaml-cpp
 - [x] extra_tools
 - [x] zsh
 - [x] clang_format
@@ -37,3 +38,7 @@
 - [x] gtsam
 - [x] proj
 - [x] sophus
+- [x] c-periphery
+- [x] libsocketcan
+- [x] ffmpeg
+- [x] bluetooth

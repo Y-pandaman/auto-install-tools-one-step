@@ -26,6 +26,7 @@ DOXYGEN_VERSION=${21:-"Release_1_9_8"}
 GEOGRAPHICLIB_VERSION=${22:-"v2.3"}
 PROJ_VERSION=${23:-"9.0.0"}
 SOPHUS_VERSION=${24:-"1.22.10"}
+C_PERIPHERY_VERSION=${25:-"v2.4.1"}
 
 status() {
     if [ -z $TERM ]; then
@@ -170,7 +171,8 @@ install_base_libs() {
         lintian \
         fakeroot \
         dh-make \
-        build-essential
+        build-essential \
+        libyaml-cpp-dev
 }
 
 # install python3
@@ -872,6 +874,34 @@ install_sophus() {
     sudo rm -rf Sophus
 }
 
+# install c-periphery
+install_c_periphery() {
+    cd /tmp
+    git clone https://github.com/vsergeev/c-periphery.git
+    cd c-periphery
+    git checkout ${C_PERIPHERY_VERSION}
+    mkdir build
+    cd build
+    cmake -DBUILD_SHARED_LIBS=ON ..
+    make -j${NUM_THREADS}
+    sudo make install
+
+    # clean
+    cd /tmp
+    sudo rm -rf c-periphery
+}
+
+# install libsocketcan
+install_socketcan() {
+    sudo apt install can-utils libsocketcan-dev libasio-dev
+}
+
+# install bluetooth
+install_bluetooth() {
+    sudo apt-get install libbluetooth-dev
+    sudo apt-get install libdbus-1-dev
+}
+
 confirm set_apt_mirror "Set apt mirror"
 confirm install_base_libs "Install base libs"
 confirm install_python3 "Install python3"
@@ -900,4 +930,7 @@ confirm install_geographiclib "Install geographiclib"
 confirm install_gtsam "Install gtsam"
 confirm install_proj "Install proj"
 confirm install_sophus "Install sophus"
+confirm install_c_periphery "Install c_periphery"
+confirm install_socketcan "Install socketcan"
+confirm install_bluetooth "Install bluetooth"
 echo "Successfully installed all dependencies."
