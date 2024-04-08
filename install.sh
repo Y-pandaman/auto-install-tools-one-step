@@ -6,12 +6,12 @@ TRT_VERSION=${2:-"8.5.3.1"}
 OS_VERSION=${3:-"ubuntu20.04"}
 TARGETARCH=${4:-"amd64"}
 CATCH2_VERSION=${5:-v3.2.1}
-NUM_THREADS=${6:-1}
+NUM_THREADS=${6:-"-1"}
 ABSL_VERSION=${7:-"lts_2021_11_02"}
-CMAKE_VERSION=${8:"3.19.2"}
+CMAKE_VERSION=${8:-"3.19.2"}
 FMT_VERSION=${9:-"9.0.0"}
 TMUX_VERSION=${10:-"3.1b"}
-LIBEVENT_VERSION=${11:"2.1.11"}
+LIBEVENT_VERSION=${11:-"2.1.11"}
 ROS1_DISTRO=${12:-"noetic"}
 ROS1_METAPACKAGE=${13:-"ros-base"}
 ROS1_PYTHON=${14:-"python3"}
@@ -27,6 +27,7 @@ GEOGRAPHICLIB_VERSION=${22:-"v2.3"}
 PROJ_VERSION=${23:-"9.0.0"}
 SOPHUS_VERSION=${24:-"1.22.10"}
 C_PERIPHERY_VERSION=${25:-"v2.4.1"}
+OPENCV_VERSION=${26:-"4.5.2"}
 
 status() {
     if [ -z $TERM ]; then
@@ -154,7 +155,7 @@ set_apt_mirror() {
 # Install requried libraries
 install_base_libs() {
     apt-get update && apt-get install -y --no-install-recommends software-properties-common
-    add-apt-repository ppa:ubuntu-toolchain-r/test
+    # add-apt-repository ppa:ubuntu-toolchain-r/test
     apt-get update && apt-get install -y --no-install-recommends \
         libcurl4-openssl-dev \
         wget \
@@ -211,7 +212,7 @@ install_extra_tools() {
             gdb
 }
 
-# install zsh
+# install zsh (not sudo)
 install_zsh() {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended &&
         git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions &&
@@ -272,7 +273,7 @@ install_cmake() {
     # build cmake
     ./bootstrap --prefix=/usr/local # use system curl to enable SSL support
     make -j
-    make install
+    sudo make install
 
     # show cmake version
     cmake --version
@@ -429,7 +430,7 @@ install_opencv_desktop_gpu() {
         -DOPENCV_ENABLE_NONFREE=ON \
         -DOPENCV_GENERATE_PKGCONFIG=YES \
         .. &&
-        make -j &&
+        make -j6 &&
         make install
 }
 
@@ -905,7 +906,7 @@ confirm set_apt_mirror "Set apt mirror"
 confirm install_base_libs "Install base libs"
 confirm install_python3 "Install python3"
 confirm install_extra_tools "Install extra tools"
-confirm install_zsh "Install zsh"
+confirm install_zsh "Install zsh [do not sudo]"
 confirm install_clang_format "Install clang format tools"
 confirm install_nvidia_driver "Install nvidia driver"
 confirm install_nvidia_tensorrt "Install nvidia tensorrt"
