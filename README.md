@@ -2,10 +2,7 @@
 
 ## usage
 ```
-    git clone https://github.com/Y-pandaman/auto-install-tools-one-step.git
-    cd auto-install-tools-one-step
-    chmod +x install.sh
-    sudo ./install.sh
+wget https://raw.githubusercontent.com/Y-pandaman/typora-source/master/2024/install.sh -O install.sh && sudo chmod +x ./install.sh && sudo ./install.sh
 ```
 
 ## supported lib
