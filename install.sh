@@ -145,11 +145,11 @@ set_apt_mirror() {
         apt-get install -y --no-install-recommends ca-certificates &&
         apt-get clean &&
         rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-    sed -i 's/ports.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sed -i 's/archive.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sed -i 's/archive.canonical.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sed -i 's/security.ubuntu.com/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
-    sed -i 's/http:\/\/mirrors.sjtug.sjtu.edu.cn/https:\/\/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list
+    sed -i 's/ports.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+    sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+    sed -i 's/archive.canonical.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+    sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+    sed -i 's/http:\/\/mirrors.aliyun.com/https:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list
 }
 
 # Install requried libraries
@@ -172,7 +172,9 @@ install_base_libs() {
         fakeroot \
         dh-make \
         build-essential \
-        libyaml-cpp-dev
+        libyaml-cpp-dev \
+        libboost-all-dev \
+        openssh-server openssh-client
 }
 
 # install python3
@@ -204,12 +206,19 @@ install_extra_tools() {
             iftop \
             nvtop \
             powertop \
+            usbtop \
             tree \
             wget \
             git \
             curl \
             net-tools \
-            gdb
+            gdb \
+            v4l2loopback-utils \
+            lm-sensors \
+            screenfetch \
+            stress \
+            wireshark \
+            mosquitto mosquitto-clients
 }
 
 # install zsh (not sudo)
@@ -934,3 +943,4 @@ confirm install_c_periphery "Install c_periphery"
 confirm install_socketcan "Install socketcan"
 confirm install_bluetooth "Install bluetooth"
 echo "Successfully installed all dependencies."
+
