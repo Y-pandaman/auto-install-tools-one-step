@@ -11,6 +11,7 @@ wget https://raw.githubusercontent.com/Y-pandaman/typora-source/master/2024/inst
 - [x] asio
 - [x] base_libs
 - [x] bluetooth
+- [x] boost
 - [x] catch2
 - [x] ceres
 - [x] clang_format
@@ -34,6 +35,7 @@ wget https://raw.githubusercontent.com/Y-pandaman/typora-source/master/2024/inst
 - [x] iftop
 - [x] iotop
 - [x] libssl-dev
+- [x] mqtt
 - [x] net-tools
 - [x] nvidia_docker
 - [x] nvidia_driver
@@ -45,13 +47,17 @@ wget https://raw.githubusercontent.com/Y-pandaman/typora-source/master/2024/inst
 - [x] python3
 - [x] ros1
 - [x] ros2
+- [x] screenfetch
+- [x] sensors
 - [x] socketcan
 - [x] sophus
 - [x] ssh
+- [x] stress
 - [x] tmux
 - [x] tree
-- [x] v4l2-ctl
+- [x] v4l2-utils
 - [x] vim
+- [x] wireshark
 - [x] wget
 - [x] yaml-cpp
 - [x] zsh
