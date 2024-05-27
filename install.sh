@@ -247,8 +247,8 @@ install_clang_format() {
 install_nvidia_driver() {
     apt-get install linux-headers-$(uname -r)
     apt-key del 7fa2af80
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
-    dpkg -i cuda-keyring_1.0-1_all.deb
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
+    dpkg -i cuda-keyring_1.1-1_all.deb
     apt-get update
     apt-get -y install nvidia-driver-535 cuda-toolkit-11-8
 }
