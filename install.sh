@@ -2,7 +2,7 @@
 
 TMP_DIR=/tmp
 CUDA_VERSION=${1:-"11.8.89"}
-TRT_VERSION=${2:-"8.5.3"}
+TRT_VERSION=${2:-"8.5.3.1"}
 OS_VERSION=${3:-"ubuntu20.04"}
 TARGETARCH=${4:-"amd64"}
 CATCH2_VERSION=${5:-v3.2.1}
