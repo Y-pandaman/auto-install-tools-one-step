@@ -924,6 +924,18 @@ install_assimp() {
     apt install libassimp-dev -y
 }
 
+# install qt
+install_qt_514() {
+    add-apt-repository ppa:beineri/opt-qt-5.14.2-focal &&
+        apt update && apt install -yq \
+        qt514base qt514charts-no-lgpl qt514declarative qt514quickcontrols2 qt514serialport qt514serialbus
+
+    echo "export PATH="/opt/qt514/bin:$PATH"" >>"$HOME"/.zshrc
+    echo "export LD_LIBRARY_PATH="/opt/qt514/lib:$LD_LIBRARY_PATH"" >>"$HOME"/.zshrc
+    echo "export QT_PLUGIN_PATH="/opt/qt514/plugins:$QT_PLUGIN_PATH"" >>"$HOME"/.zshrc
+    echo "export QML2_IMPORT_PATH="/opt/qt514/qml:$QML2_IMPORT_PATH"" >>"$HOME"/.zshrc
+}
+
 show_menu() {
     echo "================================================"
     echo "Installation Menu"
@@ -961,6 +973,7 @@ show_menu() {
     echo "31) Install bluetooth"
     echo "32) Install visp"
     echo "33) Install assimp"
+    echo "34) Install qt514"
     echo " 0) Exit"
     echo "================================================"
     echo "Enter your choice [0-31]: (Enter 0 exit !)"
@@ -1002,6 +1015,7 @@ process_choice() {
     31) install_bluetooth ;;
     32) install_visp ;;
     33) install_assimp ;;
+    34) install_qt_514 ;;
     0) exit 0 ;;
     *) echo "Invalid option. Please try again." ;;
     esac
