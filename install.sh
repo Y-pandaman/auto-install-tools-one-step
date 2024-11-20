@@ -6,7 +6,7 @@ TRT_VERSION=${2:-"8.5.3.1"}
 OS_VERSION=${3:-"ubuntu20.04"}
 TARGETARCH=${4:-"amd64"}
 CATCH2_VERSION=${5:-v3.2.1}
-NUM_THREADS=${6:-"-1"}
+NUM_THREADS=${6:-"6"}
 ABSL_VERSION=${7:-"lts_2021_11_02"}
 CMAKE_VERSION=${8:-"3.19.2"}
 FMT_VERSION=${9:-"9.0.0"}
@@ -199,12 +199,10 @@ install_extra_tools() {
         apt-get install -y --no-install-recommends \
             gawk \
             tmux \
-            zsh \
             vim \
             htop \
             iotop \
             iftop \
-            nvtop \
             powertop \
             usbtop \
             tree \
@@ -223,6 +221,7 @@ install_extra_tools() {
 
 # install zsh (not sudo)
 install_zsh() {
+    sudo apt install zsh git wget curl -y
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended &&
         git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions &&
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting &&
@@ -355,32 +354,32 @@ install_opencv_desktop_gpu() {
         libavformat-dev \
         libavutil-dev \
         libswscale-dev
-    apt-get install -yq \
-        libgstreamer1.0-0 \
-        gstreamer1.0-plugins-base \
-        gstreamer1.0-plugins-good \
-        gstreamer1.0-plugins-bad \
-        gstreamer1.0-plugins-ugly \
-        gstreamer1.0-libav \
-        gstreamer1.0-doc \
-        gstreamer1.0-tools \
-        gstreamer1.0-x \
-        gstreamer1.0-alsa \
-        gstreamer1.0-gl \
-        gstreamer1.0-gtk3 \
-        gstreamer1.0-qt5 \
-        gstreamer1.0-pulseaudio \
-        libgstreamer-plugins-base1.0-dev \
-        libgstreamer-plugins-good1.0-dev \
-        libgstreamer-plugins-bad1.0-dev
-    apt -y install libv4l-dev libdc1394-22-dev
-    apt -y install libatlas-base-dev
-    apt -y install libfaac-dev libmp3lame-dev libtheora-dev
-    apt -y install libxvidcore-dev libx264-dev
-    apt -y install libopencore-amrnb-dev libopencore-amrwb-dev
-    apt -y install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen x264 v4l-utils
-    apt-get install -yq python-dev python-numpy python-py python-pytest
-    apt-get install -yq python3-dev python3-numpy python3-py python3-pytest
+    # apt-get install -yq \
+    #     libgstreamer1.0-0 \
+    #     gstreamer1.0-plugins-base \
+    #     gstreamer1.0-plugins-good \
+    #     gstreamer1.0-plugins-bad \
+    #     gstreamer1.0-plugins-ugly \
+    #     gstreamer1.0-libav \
+    #     gstreamer1.0-doc \
+    #     gstreamer1.0-tools \
+    #     gstreamer1.0-x \
+    #     gstreamer1.0-alsa \
+    #     gstreamer1.0-gl \
+    #     gstreamer1.0-gtk3 \
+    #     gstreamer1.0-qt5 \
+    #     gstreamer1.0-pulseaudio \
+    #     libgstreamer-plugins-base1.0-dev \
+    #     libgstreamer-plugins-good1.0-dev \
+    #     libgstreamer-plugins-bad1.0-dev
+    # apt -y install libv4l-dev libdc1394-22-dev
+    # apt -y install libatlas-base-dev
+    # apt -y install libfaac-dev libmp3lame-dev libtheora-dev
+    # apt -y install libxvidcore-dev libx264-dev
+    # apt -y install libopencore-amrnb-dev libopencore-amrwb-dev
+    # apt -y install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen x264 v4l-utils
+    # apt-get install -yq python-dev python-numpy python-py python-pytest
+    # apt-get install -yq python3-dev python3-numpy python3-py python3-pytest
 
     status "Downloading source code of OpenCV"
     pushd ${TMP_DIR}
@@ -911,36 +910,112 @@ install_bluetooth() {
     apt-get install libdbus-1-dev
 }
 
-confirm set_apt_mirror "Set apt mirror"
-confirm install_base_libs "Install base libs"
-confirm install_python3 "Install python3"
-confirm install_extra_tools "Install extra tools"
-confirm install_zsh "Install zsh [do not sudo]"
-confirm install_clang_format "Install clang format tools"
-confirm install_nvidia_driver "Install nvidia driver"
-confirm install_nvidia_tensorrt "Install nvidia tensorrt"
-confirm install_cmake "Install cmake"
-confirm install_catch2 "Install catch2"
-confirm install_absl "Install absl"
-confirm install_opencv_desktop_gpu "Install opencv with gpu"
-confirm install_fmt "Install fmt"
-confirm install_docker "Install docker"
-confirm install_nvidia_docker "Install nvidia-docker"
-confirm install_tmux "Install tmux"
-confirm install_colcon "Install colcon"
-confirm install_gstreamer "Install gstreamer"
-confirm install_ecal "Install ecal"
-confirm install_ros1 "Install ros1"
-confirm install_ros2 "Install ros2"
-confirm install_gcc "Install gcc"
-confirm install_ceres "Install ceres"
-confirm install_doxygen "Install doxygen"
-confirm install_geographiclib "Install geographiclib"
-confirm install_gtsam "Install gtsam"
-confirm install_proj "Install proj"
-confirm install_sophus "Install sophus"
-confirm install_c_periphery "Install c_periphery"
-confirm install_socketcan "Install socketcan"
-confirm install_bluetooth "Install bluetooth"
-echo "Successfully installed all dependencies."
+# install visp
+install_visp() {
+    cd /tmp
+    git clone https://github.com/lagadic/visp.git
+    cd visp && mkdir build && cd build
+    cmake -DUSE_CXX_STANDARD=14 ..
+    make -j && make install
+}
 
+# install assimp
+install_assimp() {
+    apt install libassimp-dev -y
+}
+
+show_menu() {
+    echo "================================================"
+    echo "Installation Menu"
+    echo "================================================"
+    echo " 1) Set apt mirror"
+    echo " 2) Install base libs"
+    echo " 3) Install python3"
+    echo " 4) Install extra tools"
+    echo " 5) Install zsh"
+    echo " 6) Install clang format tools"
+    echo " 7) Install nvidia driver"
+    echo " 8) Install nvidia tensorrt"
+    echo " 9) Install cmake"
+    echo "10) Install catch2"
+    echo "11) Install absl"
+    echo "12) Install opencv with gpu"
+    echo "13) Install fmt"
+    echo "14) Install docker"
+    echo "15) Install nvidia-docker"
+    echo "16) Install tmux"
+    echo "17) Install colcon"
+    echo "18) Install gstreamer"
+    echo "19) Install ecal"
+    echo "20) Install ros1"
+    echo "21) Install ros2"
+    echo "22) Install gcc"
+    echo "23) Install ceres"
+    echo "24) Install doxygen"
+    echo "25) Install geographiclib"
+    echo "26) Install gtsam"
+    echo "27) Install proj"
+    echo "28) Install sophus"
+    echo "29) Install c_periphery"
+    echo "30) Install socketcan"
+    echo "31) Install bluetooth"
+    echo "32) Install visp"
+    echo "33) Install assimp"
+    echo " 0) Exit"
+    echo "================================================"
+    echo "Enter your choice [0-31]: (Enter 0 exit !)"
+}
+
+# Process choice function
+process_choice() {
+    case $1 in
+    1) set_apt_mirror ;;
+    2) install_base_libs ;;
+    3) install_python3 ;;
+    4) install_extra_tools ;;
+    5) install_zsh ;;
+    6) install_clang_format ;;
+    7) install_nvidia_driver ;;
+    8) install_nvidia_tensorrt ;;
+    9) install_cmake ;;
+    10) install_catch2 ;;
+    11) install_absl ;;
+    12) install_opencv_desktop_gpu ;;
+    13) install_fmt ;;
+    14) install_docker ;;
+    15) install_nvidia_docker ;;
+    16) install_tmux ;;
+    17) install_colcon ;;
+    18) install_gstreamer ;;
+    19) install_ecal ;;
+    20) install_ros1 ;;
+    21) install_ros2 ;;
+    22) install_gcc ;;
+    23) install_ceres ;;
+    24) install_doxygen ;;
+    25) install_geographiclib ;;
+    26) install_gtsam ;;
+    27) install_proj ;;
+    28) install_sophus ;;
+    29) install_c_periphery ;;
+    30) install_socketcan ;;
+    31) install_bluetooth ;;
+    32) install_visp ;;
+    33) install_assimp ;;
+    0) exit 0 ;;
+    *) echo "Invalid option. Please try again." ;;
+    esac
+}
+
+# Main loop
+while true; do
+    show_menu
+    read choice
+    if [[ $choice =~ ^[0-9]+$ ]]; then
+        process_choice $choice
+        echo -e "\nPress Enter to continue..."
+        read
+    else
+        echo "Please enter a valid number"
+    fi
+done
