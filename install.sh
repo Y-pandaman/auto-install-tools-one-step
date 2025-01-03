@@ -314,7 +314,7 @@ install_absl() {
     # build cmake
     mkdir build && cd build &&
         cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. &&
-        make -j${MAKE_JOBS} &&
+        make -j &&  
         make install &&
         cd /tmp &&
         rm -rf abseil-cpp
@@ -438,8 +438,8 @@ install_opencv_desktop_gpu() {
         -DOPENCV_ENABLE_NONFREE=ON \
         -DOPENCV_GENERATE_PKGCONFIG=YES \
         .. &&
-        make -j6 &&
-        make install
+        make -j &&  
+        make install  
 }
 
 # install fmt
@@ -774,7 +774,7 @@ install_ceres() {
     # build and install
     mkdir build && cd build
     cmake ..
-    make -j${NUM_THREADS}
+    make -j
     make install
 
     # clean
@@ -796,8 +796,8 @@ install_doxygen() {
     # Build doxygen
     mkdir build
     cd build
-    cmake -G "Unix Makefiles" ..
-    make -j${NUM_THREADS}
+    cmake -G "Unix Makefiles" ..  
+    make -j  
     make install
 
     # Clean up
@@ -816,7 +816,7 @@ install_geographiclib() {
     # build cmake
     mkdir build && cd build &&
         cmake .. &&
-        make -j${NUM_THREADS} &&
+        make -j &&  
         make install &&
         cd /tmp &&
         rm -rf geographiclib
@@ -833,7 +833,7 @@ install_gtsam() {
     # build and install
     mkdir build && cd build
     cmake -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF ..
-    make -j${NUM_THREADS}
+    make -j  
     make install
 
     # clean
@@ -874,7 +874,7 @@ install_sophus() {
     # build and install
     mkdir build && cd build
     cmake .. -DBUILD_SOPHUS_TESTS=OFF
-    make -j${NUM_THREADS}
+    make -j  
     make install
 
     # clean
@@ -891,7 +891,7 @@ install_c_periphery() {
     mkdir build
     cd build
     cmake -DBUILD_SHARED_LIBS=ON ..
-    make -j${NUM_THREADS}
+    make -j  
     make install
 
     # clean
