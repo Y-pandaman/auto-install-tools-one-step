@@ -3,7 +3,7 @@
 ## usage
 
 ```
-wget https://github.com/Y-pandaman/auto-install-tools-one-step/blob/main/install.sh -O install.sh && sudo chmod +x ./install.sh && sudo ./install.sh
+wget https://raw.githubusercontent.com/Y-pandaman/auto-install-tools-one-step/refs/heads/main/install.sh -O install && sudo chmod +x ./install && sudo ./install
 ```
 
 ## supported lib
